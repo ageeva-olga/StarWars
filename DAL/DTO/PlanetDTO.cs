@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Logic.Models
+namespace DAL.DTO
 {
-    public class Planet
+    public class PlanetDTO
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public List<CharacterDTO> Characters { get; set; }
     }
 }

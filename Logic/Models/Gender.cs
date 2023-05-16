@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace Logic.Models
 {
-    public class Gender
+    public enum Gender
     {
-        public string Name { get; set; }
+        Male,
+        Female
     }
 }

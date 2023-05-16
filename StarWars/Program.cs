@@ -1,4 +1,10 @@
+using Microsoft.EntityFrameworkCore;
+using DAL;
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddDbContext<SWDbContext>(options =>
+        options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddControllers();
 
