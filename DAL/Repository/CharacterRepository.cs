@@ -1,4 +1,5 @@
-﻿using DAL.DTO;
+﻿using AutoMapper;
+using DAL.DTO;
 using DAL.Interfaces;
 using Logic.Models;
 using System;
@@ -12,90 +13,74 @@ namespace DAL.Repository
     public class CharacterRepository : ICharacterRepository
     {
         private SWDbContext _context;
-        public CharacterRepository(SWDbContext context)
+        private readonly IMapper _mapper;
+        public CharacterRepository(SWDbContext context, IMapper mapper)
         {
             _context = context;
-        }
-
-        public Character AddCharacter(Character character)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void DeleteCharacter(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Character GetByIdCharacter(int id)
-        {
-            throw new NotImplementedException();
+            _mapper = mapper;
         }
 
         public List<Character> GetCharacters()
         {
-            throw new NotImplementedException();
+            var characterDTOList = _context.Characters.ToList();
+            var characterList = new List<Character>();
+            foreach(var characterDTO in characterDTOList)
+            {
+                characterList.Add(_mapper.Map<Character>(characterDTO));
+            }
+            return characterList;
+        }
+        public Character GetByIdCharacter(int id)
+        {
+            var characterDTO = _context.Characters.FirstOrDefault(x => x.Id == id);
+            if (characterDTO != null)
+            {
+                return _mapper.Map<Character>(characterDTO);
+            }
+            else
+            {
+                throw new ArgumentNullException();
+            }
         }
 
+        public Character AddCharacter(Character character)
+        {
+            var characterDTO = _mapper.Map<CharacterDTO>(character);
+            _context.Characters.AddRange(characterDTO);
+            _context.SaveChanges();
+            return character;
+        }
         public Character UpdateCharacter(Character character)
         {
-            throw new NotImplementedException();
+            var characterExistDTO = GetByIdCharacter(character.Id);
+            if (characterExistDTO != null)
+            {
+                characterExistDTO.Name = character.Name;
+                characterExistDTO.NameInOriginal = character.NameInOriginal;
+                characterExistDTO.DateOfBirth = character.DateOfBirth;
+                characterExistDTO.Planet = character.Planet;
+                characterExistDTO.Gender = character.Gender;
+                characterExistDTO.Race = character.Race;
+                characterExistDTO.Height = character.Height;
+                characterExistDTO.HairColor = character.HairColor;
+                characterExistDTO.EyeColor = character.EyeColor;
+                characterExistDTO.Description = character.Description;
+                characterExistDTO.Films.Clear();
+                characterExistDTO.Films.AddRange(character.Films);
+                _context.SaveChanges();
+            }
+            return _mapper.Map<Character>(characterExistDTO);
         }
 
-        //public List<Character> GetCharacters()
-        //{
-        //    return _context.Characters.ToList();
-        //}
-        //public Character GetByIdCharacter(int id)
-        //{
-        //    var character = _context.Characters.FirstOrDefault(x => x.Id == id);
-        //    if (character != null)
-        //    {
-        //        return character;
-        //    }
-        //    else
-        //    {
-        //        throw new ArgumentNullException();
-        //    }
-        //}
-
-        //public Character AddCharacter(Character character)
-        //{
-        //    _context.Characters.AddRange(character);
-        //    _context.SaveChanges();
-        //    return character;
-        //}
-        //public Character UpdateCharacter(Character character)
-        //{
-        //    var characterExist = GetByIdCharacter(character.Id);
-        //    if (characterExist != null)
-        //    {
-        //        characterExist.Name = character.Name;
-        //        characterExist.NameInOriginal = character.NameInOriginal;
-        //        characterExist.DateOfBirth = character.DateOfBirth;
-        //        characterExist.Planet = character.Planet;
-        //        characterExist.Gender = character.Gender;
-        //        characterExist.Race = character.Race;
-        //        characterExist.Height = character.Height;
-        //        characterExist.HairColor = character.HairColor;
-        //        characterExist.EyeColor = character.EyeColor;
-        //        characterExist.Description = character.Description;
-        //        characterExist.Films.Clear();
-        //        characterExist.Films.AddRange(character.Films);
-        //        _context.SaveChanges();
-        //    }
-        //    return character;
-        //}
-
-        //public void DeleteCharacter(int id)
-        //{
-        //    Character character = _context.Characters.FirstOrDefault(x => x.Id == id);
-        //    if (character != null)
-        //    {
-        //        character.Films = null;
-        //        _context.Characters.Remove(character);
-        //        _context.SaveChanges();
-        //    }
-    //}       
+        public void DeleteCharacter(int id)
+        {
+            var characterDTO = _context.Characters.FirstOrDefault(x => x.Id == id);
+            if (characterDTO != null)
+            {
+                characterDTO.Films = null;
+                _context.Characters.Remove(characterDTO);
+                _context.SaveChanges();
+            }
+        }
     }
 }

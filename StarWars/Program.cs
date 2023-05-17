@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using DAL;
+using AutoMapper;
+using StarWars;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,6 +9,8 @@ builder.Services.AddDbContext<SWDbContext>(options =>
         options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddControllers();
+
+builder.Services.AddAutoMapper(typeof(AppMappingProfile));
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
