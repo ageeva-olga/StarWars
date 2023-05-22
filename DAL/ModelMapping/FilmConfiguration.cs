@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace DAL.ModelMapping
 {
-    public class FilmConfiguration : IEntityTypeConfiguration<FilmDTO>
+    public class FilmConfiguration : IEntityTypeConfiguration<Film>
     {
-        public void Configure(EntityTypeBuilder<FilmDTO> builder)
+        public void Configure(EntityTypeBuilder<Film> builder)
         {
             builder
                 .ToTable("Films")

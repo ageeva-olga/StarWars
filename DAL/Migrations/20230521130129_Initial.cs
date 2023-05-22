@@ -2,6 +2,8 @@
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace DAL.Migrations
 {
     /// <inheritdoc />
@@ -65,7 +67,7 @@ namespace DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CharacterDTOFilmDTO",
+                name: "FilmsWithCharacters",
                 columns: table => new
                 {
                     CharactersId = table.Column<int>(type: "INTEGER", nullable: false),
@@ -73,37 +75,57 @@ namespace DAL.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CharacterDTOFilmDTO", x => new { x.CharactersId, x.FilmsId });
+                    table.PrimaryKey("PK_FilmsWithCharacters", x => new { x.CharactersId, x.FilmsId });
                     table.ForeignKey(
-                        name: "FK_CharacterDTOFilmDTO_Characters_CharactersId",
+                        name: "FK_FilmsWithCharacters_Characters_CharactersId",
                         column: x => x.CharactersId,
                         principalTable: "Characters",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_CharacterDTOFilmDTO_Films_FilmsId",
+                        name: "FK_FilmsWithCharacters_Films_FilmsId",
                         column: x => x.FilmsId,
                         principalTable: "Films",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateIndex(
-                name: "IX_CharacterDTOFilmDTO_FilmsId",
-                table: "CharacterDTOFilmDTO",
-                column: "FilmsId");
+            migrationBuilder.InsertData(
+                table: "Films",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 1, "A New Hope" },
+                    { 2, "The Empire Strikes Back" },
+                    { 3, "The PHantom Menace" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Planets",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 1, "Alderaan" },
+                    { 2, "Onderon" },
+                    { 3, "Tatooine" }
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Characters_PlanetId",
                 table: "Characters",
                 column: "PlanetId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FilmsWithCharacters_FilmsId",
+                table: "FilmsWithCharacters",
+                column: "FilmsId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "CharacterDTOFilmDTO");
+                name: "FilmsWithCharacters");
 
             migrationBuilder.DropTable(
                 name: "Characters");

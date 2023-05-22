@@ -1,17 +1,31 @@
 using Microsoft.EntityFrameworkCore;
+using Serilog;
+using System.Text.Json.Serialization;
+using Microsoft.EntityFrameworkCore;
 using DAL;
 using AutoMapper;
 using StarWars;
 using Microsoft.OpenApi.Models;
+using NLog.Extensions.Logging;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddLogging();
+
+var provider = builder.Services.BuildServiceProvider();
+var factory = provider.GetService<ILoggerFactory>();
+factory.AddNLog();
+factory.ConfigureNLog("nlog.config");
+
+var logger = provider.GetService<ILogger<Program>>();
+builder.Services.AddSingleton<Microsoft.Extensions.Logging.ILogger>(_ => logger);
 
 builder.Services.AddDbContext<SWDbContext>(options =>
         options.UseSqlite(builder.Configuration.GetConnectionString("StarWarsDatabase")));
 
 builder.Services.AddControllers();
 
-builder.Services.AddAutoMapper(typeof(AppMappingProfile));
+builder.Services.AddBllServices();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
@@ -30,7 +44,6 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseSwagger();
-app.UseSwaggerUI();
 app.UseSwaggerUI(c =>
 {
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "StarWars v1");

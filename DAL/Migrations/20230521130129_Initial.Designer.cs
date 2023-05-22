@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.Migrations
 {
     [DbContext(typeof(SWDbContext))]
-    [Migration("20230517165311_Initial")]
+    [Migration("20230521130129_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -19,7 +19,7 @@ namespace DAL.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.5");
 
-            modelBuilder.Entity("CharacterDTOFilmDTO", b =>
+            modelBuilder.Entity("CharacterFilm", b =>
                 {
                     b.Property<int>("CharactersId")
                         .HasColumnType("INTEGER");
@@ -31,10 +31,10 @@ namespace DAL.Migrations
 
                     b.HasIndex("FilmsId");
 
-                    b.ToTable("CharacterDTOFilmDTO");
+                    b.ToTable("FilmsWithCharacters", (string)null);
                 });
 
-            modelBuilder.Entity("DAL.DTO.CharacterDTO", b =>
+            modelBuilder.Entity("Logic.Models.Character", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -82,10 +82,10 @@ namespace DAL.Migrations
 
                     b.HasIndex("PlanetId");
 
-                    b.ToTable("Characters");
+                    b.ToTable("Characters", (string)null);
                 });
 
-            modelBuilder.Entity("DAL.DTO.FilmDTO", b =>
+            modelBuilder.Entity("Logic.Models.Film", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -97,10 +97,27 @@ namespace DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Films");
+                    b.ToTable("Films", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "A New Hope"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "The Empire Strikes Back"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "The PHantom Menace"
+                        });
                 });
 
-            modelBuilder.Entity("DAL.DTO.PlanetDTO", b =>
+            modelBuilder.Entity("Logic.Models.Planet", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -112,27 +129,44 @@ namespace DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Planets");
+                    b.ToTable("Planets", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Alderaan"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Onderon"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Tatooine"
+                        });
                 });
 
-            modelBuilder.Entity("CharacterDTOFilmDTO", b =>
+            modelBuilder.Entity("CharacterFilm", b =>
                 {
-                    b.HasOne("DAL.DTO.CharacterDTO", null)
+                    b.HasOne("Logic.Models.Character", null)
                         .WithMany()
                         .HasForeignKey("CharactersId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DAL.DTO.FilmDTO", null)
+                    b.HasOne("Logic.Models.Film", null)
                         .WithMany()
                         .HasForeignKey("FilmsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("DAL.DTO.CharacterDTO", b =>
+            modelBuilder.Entity("Logic.Models.Character", b =>
                 {
-                    b.HasOne("DAL.DTO.PlanetDTO", "Planet")
+                    b.HasOne("Logic.Models.Planet", "Planet")
                         .WithMany("Characters")
                         .HasForeignKey("PlanetId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -141,7 +175,7 @@ namespace DAL.Migrations
                     b.Navigation("Planet");
                 });
 
-            modelBuilder.Entity("DAL.DTO.PlanetDTO", b =>
+            modelBuilder.Entity("Logic.Models.Planet", b =>
                 {
                     b.Navigation("Characters");
                 });

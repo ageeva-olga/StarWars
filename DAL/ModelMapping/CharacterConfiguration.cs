@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace DAL.ModelDTO
 {
-    public class CharacterConfiguration : IEntityTypeConfiguration<CharacterDTO>
+    public class CharacterConfiguration : IEntityTypeConfiguration<Character>
     {
-        public void Configure(EntityTypeBuilder<CharacterDTO> builder)
+        public void Configure(EntityTypeBuilder<Character> builder)
         {
             builder
                 .ToTable("Characters")

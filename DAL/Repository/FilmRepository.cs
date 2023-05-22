@@ -1,0 +1,82 @@
+﻿using Logic.Interfaces;
+using Logic.Models;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace DAL.Repository
+{
+    public class FilmRepository : IFilmRepository
+    {
+        private SWDbContext _context;
+        public FilmRepository(SWDbContext context)
+        {
+            _context = context;
+        }
+
+        public Film AddFilm(Film film)
+        {
+            _context.Films.AddRange(film);
+            _context.SaveChanges();
+            return film;
+        }
+        public void DeleteFilm(int id)
+        {
+            var film = _context.Films.FirstOrDefault(x => x.Id == id);
+            if (film != null)
+            {
+                film.Characters = null;
+                _context.Films.Remove(film);
+                _context.SaveChanges();
+            }
+            else
+            {
+                throw new ArgumentNullException();
+            }
+        }
+
+        public Film GetByIdFilm(int id)
+        {
+            var film = _context.Films
+                .Include(film => film.Characters)
+                .FirstOrDefault(x => x.Id == id);
+            if (film != null)
+            {
+                return film;
+            }
+            else
+            {
+                throw new ArgumentNullException();
+            }
+        }
+
+        public List<Film> GetFilms()
+        {
+            var filmList = _context.Films
+                .Include(film => film.Characters)
+                .ToList();
+            var filmResultList = new List<Film>();
+            foreach (var film in filmList)
+            {
+                filmResultList.Add(film);
+            }
+            return filmResultList;
+        }
+
+        public void FilmInfo(List<Film> films)
+        {
+            var filmsList = new List<Film>() { };
+            foreach(var film in films)
+            {
+                filmsList.Add(_context.Films.FirstOrDefault(z => z.Id == film.Id));
+            }           
+            if (filmsList.Count == 0)
+            {
+                throw new DirectoryNotFoundException();
+            }
+        }
+    }
+}

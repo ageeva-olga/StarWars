@@ -1,4 +1,4 @@
-﻿using DAL.Interfaces;
+﻿using Logic.Interfaces;
 using Logic.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,21 +8,28 @@ namespace StarWars.Controllers
     [ApiController]
     public class CharacterController: Controller
     {
-        private ICharacterRepository _characterRepo;
-        public CharacterController(ICharacterRepository characterRepo)
+        private ICharacterFacade _characterFacade;
+        public CharacterController(ICharacterFacade characterFacade)
         {
-            _characterRepo = characterRepo;
+            _characterFacade = characterFacade;
         }
-        [HttpGet]
+        [HttpGet("getList")]
         public List<Character> GetCharacters()
         {
-            var model = _characterRepo.GetCharacters();
+            var model = _characterFacade.GetCharacters();
             return model;
+        }
+
+        [HttpGet("getById")]
+        public Character GetByIdCharacters(int id)
+        {
+            var characterModel = _characterFacade.GetByIdCharacter(id);
+            return characterModel;
         }
         [HttpPut]
         public Character AddCharacter(Character character)
         {
-            var characterModel = _characterRepo.AddCharacter(character);
+            var characterModel = _characterFacade.AddCharacter(character);
 
             return characterModel;
         }
@@ -30,7 +37,7 @@ namespace StarWars.Controllers
         [HttpPost]
         public Character UpdateCharacter(Character character)
         {
-            var characterModel = _characterRepo.UpdateCharacter(character);
+            var characterModel = _characterFacade.UpdateCharacter(character);
 
             return characterModel;
         }
@@ -38,7 +45,7 @@ namespace StarWars.Controllers
         [HttpDelete]
         public IActionResult DeleteCharacter(int id)
         {
-            _characterRepo.DeleteCharacter(id);
+            _characterFacade.DeleteCharacter(id);
             return Ok();
         }
     }

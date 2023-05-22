@@ -1,5 +1,6 @@
-﻿using DAL.Interfaces;
-using DAL.Repository;
+﻿using DAL.Repository;
+using Logic.Facades;
+using Logic.Interfaces;
 
 namespace StarWars
 {
@@ -8,6 +9,13 @@ namespace StarWars
         public static void AddBllServices(this IServiceCollection services)
         {
             services.AddScoped<ICharacterRepository, CharacterRepository>();
+            services.AddScoped<ICharacterFacade, CharacterFacade>();
+
+            services.AddScoped<IPlanetRepository, PlanetRepository>();
+            services.AddScoped<IPlanetFacade, PlanetFacade>();
+
+            services.AddScoped<IFilmRepository, FilmRepository>();
+            services.AddScoped<IFilmFacade, FilmFacade>();
         }
     }
 }

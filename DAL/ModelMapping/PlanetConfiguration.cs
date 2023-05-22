@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace DAL.ModelMapping
 {
-    public class PlanetConfiguration : IEntityTypeConfiguration<PlanetDTO>
+    public class PlanetConfiguration : IEntityTypeConfiguration<Planet>
     {
-        public void Configure(EntityTypeBuilder<PlanetDTO> builder)
+        public void Configure(EntityTypeBuilder<Planet> builder)
         {
             builder
                 .ToTable("Planets")

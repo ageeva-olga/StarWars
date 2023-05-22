@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Logic.Models
@@ -9,6 +10,9 @@ namespace Logic.Models
     public class Planet
     {
         public int Id { get; set; }
-        public string Name { get; set; }
+        public string? Name { get; set; }
+
+        [JsonIgnore]
+        public List<Character>? Characters { get; set; }
     }
 }

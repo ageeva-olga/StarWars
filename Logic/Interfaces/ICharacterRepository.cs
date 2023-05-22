@@ -1,12 +1,11 @@
-﻿using DAL.DTO;
-using Logic.Models;
+﻿using Logic.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DAL.Interfaces
+namespace Logic.Interfaces
 {
     public interface ICharacterRepository
     {
