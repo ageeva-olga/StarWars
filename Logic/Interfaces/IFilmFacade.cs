@@ -9,8 +9,8 @@ namespace Logic.Interfaces
 {
     public interface IFilmFacade
     {
-        public List<Film> GetFilms();
-        public Film AddFilm(Film character);
-        public void DeleteFilm(int id);
+        List<Film> GetFilms();
+        Film AddFilm(Film character);
+        void DeleteFilm(int id);
     }
 }

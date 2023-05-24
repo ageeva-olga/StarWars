@@ -9,10 +9,10 @@ namespace Logic.Interfaces
 {
     public interface ICharacterFacade
     {
-        public List<Character> GetCharacters();
-        public Character GetByIdCharacter(int id);
-        public string AddCharacter(Character character);
-        public string UpdateCharacter(Character character);
-        public void DeleteCharacter(int id);
+        List<Character> GetCharacters();
+        Character GetByIdCharacter(int id);
+        string AddCharacter(Character character);
+        string UpdateCharacter(Character character);
+        void DeleteCharacter(int id);
     }
 }
