@@ -36,19 +36,6 @@ namespace Logic.Facades
             }
         }
 
-        public Film GetByIdFilm(int id)
-        {
-            try
-            {
-                return _filmRepository.GetByIdFilm(id);
-            }
-            catch (ArgumentNullException ex)
-            {
-                _logger.LogError(ex, ex.Message);
-                throw;
-            }
-        }
-
         public List<Film> GetFilms()
         {
             return _filmRepository.GetFilms();

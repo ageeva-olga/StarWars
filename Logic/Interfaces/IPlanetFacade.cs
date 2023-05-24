@@ -10,7 +10,6 @@ namespace Logic.Interfaces
     public interface IPlanetFacade
     {
         public List<Planet> GetPlanets();
-        public Planet GetByIdPlanet(int id);
         public Planet AddPlanet(Planet character);
         public void DeletePlanet(int id);
     }

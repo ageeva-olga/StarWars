@@ -38,41 +38,16 @@ namespace DAL.Repository
             }
         }
 
-        public Planet GetByIdPlanet(int id)
-        {
-            var planet = _context.Planets
-                .Include(planet => planet.Characters)
-                .FirstOrDefault(x => x.Id == id);
-            if (planet != null)
-            {
-                return planet;
-            }
-            else
-            {
-                throw new ArgumentNullException();
-            }
-        }
-
         public List<Planet> GetPlanets()
         {
             var planetList = _context.Planets
-                .Include(planet => planet.Characters)
                 .ToList();
-            var planetResultList = new List<Planet>();
-            foreach (var planet in planetList)
-            {
-                planetResultList.Add(planet);
-            }
-            return planetResultList;
+            return planetList;
         }
 
-        public void PlanetInfo(Planet planet)
+        public Planet GetPlanet(int id)
         {
-            var planetFirst = _context.Planets.FirstOrDefault(p => p.Id == planet.Id);
-            if (planet == null)
-            {
-                throw new DirectoryNotFoundException();
-            }
+            return _context.Planets.FirstOrDefault(p => p.Id == id);
         }
     }
 }

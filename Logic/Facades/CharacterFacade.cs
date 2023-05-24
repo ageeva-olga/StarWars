@@ -23,20 +23,16 @@ namespace Logic.Facades
             _planetRepository = planetRepository;
             _filmRepository = filmRepository;
         }
-        public Character AddCharacter(Character character)
+        public string AddCharacter(Character character)
         {
-            try
+            var error = ValidateCharacter(character);
+            if (String.IsNullOrEmpty(error))
             {
-                _planetRepository.PlanetInfo(character.Planet);
-                _filmRepository.FilmInfo(character.Films);
-                return _characterRepo.AddCharacter(character);
+                _characterRepo.AddCharacter(character);
             }
-            catch (DirectoryNotFoundException ex)
-            {
-                _logger.LogError(ex, ex.Message);
-                throw;
-            }
-            
+
+            return error;
+
         }
 
         public void DeleteCharacter(int id)
@@ -69,24 +65,46 @@ namespace Logic.Facades
         {
             return _characterRepo.GetCharacters();
         }
+        public string ValidateCharacter(Character character)
+        {
+            var films = _filmRepository.GetFilms(character.Films.Select(f => f.Id).ToArray());
+            if (films.Count != character.Films.Count)
+            {
+                var message = "Film not found.";
+                _logger.LogError(message);
+                return message;
+            }
+            character.Films = films;
 
-        public Character UpdateCharacter(Character character)
+            var planet = _planetRepository.GetPlanet(character.PlanetId);
+            if(planet == null)
+            {
+                var message = "Planet not found.";
+                _logger.LogError(message);
+                return message;
+            }
+            character.Planet = planet;
+
+            return "";
+        }
+
+        public string UpdateCharacter(Character character)
         {
             try
             {
-                _planetRepository.PlanetInfo(character.Planet);
-                _filmRepository.FilmInfo(character.Films);
-                return _characterRepo.UpdateCharacter(character);
+                var error = ValidateCharacter(character);
+                if (String.IsNullOrEmpty(error))
+                {
+                    _characterRepo.UpdateCharacter(character);
+                }
+
+                return error;
             }
             catch (ArgumentNullException ex)
             {
-                _logger.LogError(ex, ex.Message);
-                throw;
-            }
-            catch (DirectoryNotFoundException ex)
-            {
-                _logger.LogError(ex, ex.Message);
-                throw;
+                var message = "Character not found.";
+                _logger.LogError(message);
+                return message;
             }
         }
     }

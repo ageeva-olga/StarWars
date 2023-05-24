@@ -10,9 +10,8 @@ namespace Logic.Interfaces
     public interface IPlanetRepository
     {
         public List<Planet> GetPlanets();
-        public Planet GetByIdPlanet(int id);
         public Planet AddPlanet(Planet planet);
-        public void PlanetInfo(Planet planet);
+        public Planet GetPlanet(int id);
         public void DeletePlanet(int id);
     }
 }

@@ -20,12 +20,6 @@ namespace StarWars.Controllers
             return model;
         }
 
-        [HttpGet("getById")]
-        public Film GetByIdCharacters(int id)
-        {
-            var filmModel = _filmFacade.GetByIdFilm(id);
-            return filmModel;
-        }
         [HttpPut]
         public Film AddCharacter(Film character)
         {

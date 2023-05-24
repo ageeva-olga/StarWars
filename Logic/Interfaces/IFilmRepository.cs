@@ -9,10 +9,15 @@ namespace Logic.Interfaces
 {
     public interface IFilmRepository
     {
-        public List<Film> GetFilms();
-        public Film GetByIdFilm(int id);
-        public Film AddFilm(Film film);
-        public void FilmInfo(List<Film> film);
-        public void DeleteFilm(int id);
+        
+        List<Film> GetFilms();      
+        
+        Film AddFilm(Film film);
+        
+        List<Film> GetFilms(int[] ids);
+        
+        void FilmInfo(List<Film> film);
+        
+        void DeleteFilm(int id);
     }
 }

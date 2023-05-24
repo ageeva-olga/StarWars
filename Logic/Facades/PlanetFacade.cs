@@ -36,19 +36,6 @@ namespace Logic.Facades
             }
         }
 
-        public Planet GetByIdPlanet(int id)
-        {
-            try
-            {
-                return _planetRepository.GetByIdPlanet(id);
-            }
-            catch (ArgumentNullException ex)
-            {
-                _logger.LogError(ex, ex.Message);
-                throw;
-            }
-        }
-
         public List<Planet> GetPlanets()
         {
             return _planetRepository.GetPlanets();

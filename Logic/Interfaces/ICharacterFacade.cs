@@ -11,8 +11,8 @@ namespace Logic.Interfaces
     {
         public List<Character> GetCharacters();
         public Character GetByIdCharacter(int id);
-        public Character AddCharacter(Character character);
-        public Character UpdateCharacter(Character character);
+        public string AddCharacter(Character character);
+        public string UpdateCharacter(Character character);
         public void DeleteCharacter(int id);
     }
 }

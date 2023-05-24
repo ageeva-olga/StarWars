@@ -38,21 +38,6 @@ namespace DAL.Repository
             }
         }
 
-        public Film GetByIdFilm(int id)
-        {
-            var film = _context.Films
-                .Include(film => film.Characters)
-                .FirstOrDefault(x => x.Id == id);
-            if (film != null)
-            {
-                return film;
-            }
-            else
-            {
-                throw new ArgumentNullException();
-            }
-        }
-
         public List<Film> GetFilms()
         {
             var filmList = _context.Films
@@ -64,6 +49,13 @@ namespace DAL.Repository
                 filmResultList.Add(film);
             }
             return filmResultList;
+        }
+
+        public List<Film> GetFilms(int[] ids)
+        {
+            var filmList = _context.Films.Where(f => ids.Any(id => id == f.Id))
+                .ToList();
+            return filmList;
         }
 
         public void FilmInfo(List<Film> films)

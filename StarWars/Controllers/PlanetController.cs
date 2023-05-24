@@ -20,12 +20,6 @@ namespace StarWars.Controllers
             return model;
         }
 
-        [HttpGet("getById")]
-        public Planet GetByIdPlanet(int id)
-        {
-            var characterModel = _planetFacade.GetByIdPlanet(id);
-            return characterModel;
-        }
         [HttpPut]
         public Planet AddPlanet(Planet planet)
         {

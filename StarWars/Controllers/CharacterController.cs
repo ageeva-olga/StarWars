@@ -27,19 +27,27 @@ namespace StarWars.Controllers
             return characterModel;
         }
         [HttpPut]
-        public Character AddCharacter(Character character)
+        public IActionResult AddCharacter(Character character)
         {
-            var characterModel = _characterFacade.AddCharacter(character);
+            var error = _characterFacade.AddCharacter(character);
 
-            return characterModel;
+            if (String.IsNullOrEmpty(error))
+            {
+                return Ok();
+            }
+            return BadRequest(error);
         }
 
         [HttpPost]
-        public Character UpdateCharacter(Character character)
+        public IActionResult UpdateCharacter(Character character)
         {
-            var characterModel = _characterFacade.UpdateCharacter(character);
+            var error = _characterFacade.UpdateCharacter(character);
 
-            return characterModel;
+            if(String.IsNullOrEmpty(error))
+            {
+                return Ok();
+            }
+            return BadRequest(error);
         }
 
         [HttpDelete]
