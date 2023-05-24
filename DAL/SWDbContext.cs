@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DAL.DTO;
-using DAL.ModelDTO;
+﻿using DAL.ModelDTO;
 using DAL.ModelMapping;
 using Logic.Models;
 using Microsoft.EntityFrameworkCore;

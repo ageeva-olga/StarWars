@@ -1,9 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using Serilog;
-using System.Text.Json.Serialization;
-using Microsoft.EntityFrameworkCore;
 using DAL;
-using AutoMapper;
 using StarWars;
 using Microsoft.OpenApi.Models;
 using NLog.Extensions.Logging;

@@ -1,11 +1,6 @@
 ﻿using Logic.Interfaces;
 using Logic.Models;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Logic.Facades
 {

@@ -1,13 +1,7 @@
-﻿using AutoMapper;
-using DAL.DTO;
-using Logic.Interfaces;
+﻿using Logic.Interfaces;
 using Logic.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace DAL.Repository
 {
@@ -50,8 +44,6 @@ namespace DAL.Repository
 
         public Character AddCharacter(Character character)
         {
-            //character.Films = character.Films.Select(x => _context.Films.First(z => z.Id == x.Id)).ToList();
-            //character.Planet = _context.Planets.First(p => p.Id == character.PlanetId);
             _context.Characters.AddRange(character);
             _context.SaveChanges();
             return character;
@@ -64,7 +56,6 @@ namespace DAL.Repository
                 characterExist.Name = character.Name;
                 characterExist.NameInOriginal = character.NameInOriginal;
                 characterExist.DateOfBirth = character.DateOfBirth;
-                //characterExist.Planet = _context.Planets.First(p => p.Id == character.PlanetId);
                 characterExist.Planet = character.Planet;
                 characterExist.Gender = character.Gender;
                 characterExist.Race = character.Race;
@@ -74,7 +65,6 @@ namespace DAL.Repository
                 characterExist.Description = character.Description;
                 characterExist.Films.Clear();
                 characterExist.Films.AddRange(character.Films);
-                //characterExist.Films.AddRange(character.Films.Select(x => _context.Films.First(z => z.Id == x.Id)).ToList());
                 _context.SaveChanges();
             }
             else
