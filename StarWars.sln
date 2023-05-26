@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Logic", "Logic\Logic.csproj
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DAL", "DAL\DAL.csproj", "{9B29D764-0611-4D20-8CEA-B7E7E795B3FE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestProject1", "TestProject1\TestProject1.csproj", "{95CA8074-9BF3-4538-829D-AE4DF45C7064}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StarWarsTests", "TestProject1\StarWarsTests.csproj", "{95CA8074-9BF3-4538-829D-AE4DF45C7064}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
