@@ -15,13 +15,13 @@ namespace TestProject1
         Film film1;
 
         [OneTimeSetUp]
-        public void NewDirAndFiles()
+        public void NewFiles()
         {
             planet1 = new Planet() { Id = 1, Name = "Tatooine" };
             film1 = new Film() { Id = 1, Name = "A New Hope" };
         }
         [Test]
-        public void TestMethod1()
+        public void TestFilmNotFound()
         {
             var characterRepo = new Mock<ICharacterRepository>();
             var loggerMock = new Mock<ILogger>();
@@ -55,7 +55,7 @@ namespace TestProject1
         }
 
         [Test]
-        public void TestMethod2()
+        public void TestPlanetNotFound()
         {
             var characterRepo = new Mock<ICharacterRepository>();
             var loggerMock = new Mock<ILogger>();
