@@ -24,7 +24,7 @@ namespace Logic.Facades
             {
                 _planetRepository.DeletePlanet(id);
             }
-            catch (ArgumentNullException ex)
+            catch (KeyNotFoundException ex)
             {
                 _logger.LogError(ex, ex.Message);
                 throw;

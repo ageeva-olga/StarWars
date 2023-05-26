@@ -8,8 +8,8 @@ namespace Logic.Facades
     {
         private ICharacterRepository _characterRepo;
         private ILogger _logger;
-        IPlanetRepository _planetRepository;
-        IFilmRepository _filmRepository;
+        private IPlanetRepository _planetRepository;
+        private IFilmRepository _filmRepository;
         public CharacterFacade(ICharacterRepository characterRepo, ILogger logger, 
             IPlanetRepository planetRepository, IFilmRepository filmRepository)
         {
@@ -36,7 +36,7 @@ namespace Logic.Facades
             {
                 _characterRepo.DeleteCharacter(id);
             }
-            catch (ArgumentNullException ex)
+            catch (KeyNotFoundException ex)
             {
                 _logger.LogError(ex, ex.Message);
                 throw;
@@ -49,7 +49,7 @@ namespace Logic.Facades
             {
                 return _characterRepo.GetByIdCharacter(id);
             }
-            catch(ArgumentNullException ex)
+            catch(KeyNotFoundException ex)
             {
                 _logger.LogError(ex, ex.Message);
                 throw;
@@ -95,7 +95,7 @@ namespace Logic.Facades
 
                 return error;
             }
-            catch (ArgumentNullException ex)
+            catch (KeyNotFoundException ex)
             {
                 var message = "Character not found.";
                 _logger.LogError(message);

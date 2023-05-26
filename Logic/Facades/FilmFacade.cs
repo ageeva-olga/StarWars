@@ -24,7 +24,7 @@ namespace Logic.Facades
             {
                 _filmRepository.DeleteFilm(id);
             }
-            catch (ArgumentNullException ex)
+            catch (KeyNotFoundException ex)
             {
                 _logger.LogError(ex, ex.Message);
                 throw;

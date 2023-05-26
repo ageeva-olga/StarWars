@@ -21,16 +21,16 @@ namespace DAL.Repository
         public void DeleteFilm(int id)
         {
             var film = _context.Films.FirstOrDefault(x => x.Id == id);
-            if (film != null)
+
+            if (film == null)
             {
-                film.Characters = null;
-                _context.Films.Remove(film);
-                _context.SaveChanges();
+                throw new KeyNotFoundException();
             }
-            else
-            {
-                throw new ArgumentNullException();
-            }
+
+            film.Characters = null;
+            _context.Films.Remove(film);
+            _context.SaveChanges();
+
         }
 
         public List<Film> GetFilms()
@@ -38,12 +38,8 @@ namespace DAL.Repository
             var filmList = _context.Films
                 .Include(film => film.Characters)
                 .ToList();
-            var filmResultList = new List<Film>();
-            foreach (var film in filmList)
-            {
-                filmResultList.Add(film);
-            }
-            return filmResultList;
+
+            return filmList;
         }
 
         public List<Film> GetFilms(int[] ids)
@@ -56,6 +52,7 @@ namespace DAL.Repository
         public void FilmInfo(List<Film> films)
         {
             var filmsList = new List<Film>() { };
+
             foreach(var film in films)
             {
                 filmsList.Add(_context.Films.FirstOrDefault(z => z.Id == film.Id));

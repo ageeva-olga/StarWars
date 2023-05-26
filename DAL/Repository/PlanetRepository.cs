@@ -20,16 +20,15 @@ namespace DAL.Repository
         public void DeletePlanet(int id)
         {
             var planet = _context.Planets.FirstOrDefault(x => x.Id == id);
-            if (planet != null)
+
+            if (planet == null)
             {
-                planet.Characters = null;
-                _context.Planets.Remove(planet);
-                _context.SaveChanges();
+                throw new KeyNotFoundException();
             }
-            else
-            {
-                throw new ArgumentNullException();
-            }
+
+            planet.Characters = null;
+            _context.Planets.Remove(planet);
+            _context.SaveChanges();
         }
 
         public List<Planet> GetPlanets()

@@ -19,12 +19,8 @@ namespace DAL.Repository
                 .Include(character => character.Planet)
                 .Include(character => character.Films)
                 .ToList();
-            var characterResultList = new List<Character>();
-            foreach(var character in characterList)
-            {
-                characterResultList.Add(character);
-            }
-            return characterResultList;
+
+            return characterList;
         }
         public Character GetByIdCharacter(int id)
         {
@@ -32,14 +28,13 @@ namespace DAL.Repository
                 .Include(character => character.Planet)
                 .Include(character => character.Films)
                 .FirstOrDefault(x => x.Id == id);
-            if (character != null)
+
+            if (character == null)
             {
-                return character;
+                throw new KeyNotFoundException();
             }
-            else
-            {
-                throw new ArgumentNullException();
-            }
+
+            return character;
         }
 
         public Character AddCharacter(Character character)
@@ -51,42 +46,36 @@ namespace DAL.Repository
         public Character UpdateCharacter(Character character)
         {
             var characterExist = GetByIdCharacter(character.Id);
-            if (characterExist != null)
-            {
-                characterExist.Name = character.Name;
-                characterExist.NameInOriginal = character.NameInOriginal;
-                characterExist.DateOfBirth = character.DateOfBirth;
-                characterExist.Planet = character.Planet;
-                characterExist.Gender = character.Gender;
-                characterExist.Race = character.Race;
-                characterExist.Height = character.Height;
-                characterExist.HairColor = character.HairColor;
-                characterExist.EyeColor = character.EyeColor;
-                characterExist.Description = character.Description;
-                characterExist.Films.Clear();
-                characterExist.Films.AddRange(character.Films);
-                _context.SaveChanges();
-            }
-            else
-            {
-                throw new ArgumentNullException();
-            }
+
+            characterExist.Name = character.Name;
+            characterExist.NameInOriginal = character.NameInOriginal;
+            characterExist.DateOfBirth = character.DateOfBirth;
+            characterExist.Planet = character.Planet;
+            characterExist.Gender = character.Gender;
+            characterExist.Race = character.Race;
+            characterExist.Height = character.Height;
+            characterExist.HairColor = character.HairColor;
+            characterExist.EyeColor = character.EyeColor;
+            characterExist.Description = character.Description;
+            characterExist.Films.Clear();
+            characterExist.Films.AddRange(character.Films);
+            _context.SaveChanges();
+
             return characterExist;
         }
 
         public void DeleteCharacter(int id)
         {
             var character = _context.Characters.FirstOrDefault(x => x.Id == id);
-            if (character != null)
+
+            if (character == null)
             {
-                character.Films = null;
-                _context.Characters.Remove(character);
-                _context.SaveChanges();
+                throw new KeyNotFoundException();
             }
-            else
-            {
-                throw new ArgumentNullException();
-            }
+
+            character.Films = null;
+            _context.Characters.Remove(character);
+            _context.SaveChanges();
         }
     }
 }
