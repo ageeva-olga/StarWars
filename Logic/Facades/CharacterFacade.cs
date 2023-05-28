@@ -30,16 +30,18 @@ namespace Logic.Facades
 
         }
 
-        public void DeleteCharacter(int id)
+        public string DeleteCharacter(int id)
         {
             try
             {
                 _characterRepo.DeleteCharacter(id);
+
+                return "";
             }
             catch (KeyNotFoundException ex)
             {
                 _logger.LogError(ex, ex.Message);
-                throw;
+                return ex.Message;
             }
         }
 

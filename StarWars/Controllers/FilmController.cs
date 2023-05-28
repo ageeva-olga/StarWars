@@ -14,14 +14,14 @@ namespace StarWars.Controllers
             _filmFacade = filmFacade;
         }
         [HttpGet("getList")]
-        public List<Film> GetCharacters()
+        public List<Film> GetFilms()
         {
             var model = _filmFacade.GetFilms();
             return model;
         }
 
         [HttpPut]
-        public Film AddCharacter(Film character)
+        public Film AddFilm(Film character)
         {
             var filmModel = _filmFacade.AddFilm(character);
 
@@ -29,10 +29,15 @@ namespace StarWars.Controllers
         }
 
         [HttpDelete]
-        public IActionResult DeleteCharacter(int id)
+        public IActionResult DeleteFilm(int id)
         {
-            _filmFacade.DeleteFilm(id);
-            return Ok();
+            var error = _filmFacade.DeleteFilm(id);
+
+            if (String.IsNullOrEmpty(error))
+            {
+                return Ok();
+            }
+            return BadRequest(error);
         }
     }
 }

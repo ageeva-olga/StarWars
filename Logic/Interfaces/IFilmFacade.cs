@@ -6,6 +6,6 @@ namespace Logic.Interfaces
     {
         List<Film> GetFilms();
         Film AddFilm(Film character);
-        void DeleteFilm(int id);
+        string DeleteFilm(int id);
     }
 }

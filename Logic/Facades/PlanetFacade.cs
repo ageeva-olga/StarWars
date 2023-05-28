@@ -18,16 +18,17 @@ namespace Logic.Facades
             return _planetRepository.AddPlanet(planet);
         }
 
-        public void DeletePlanet(int id)
+        public string DeletePlanet(int id)
         {
             try
             {
                 _planetRepository.DeletePlanet(id);
+                return "";
             }
             catch (KeyNotFoundException ex)
             {
                 _logger.LogError(ex, ex.Message);
-                throw;
+                return ex.Message;
             }
         }
 

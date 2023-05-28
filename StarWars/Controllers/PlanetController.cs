@@ -31,8 +31,13 @@ namespace StarWars.Controllers
         [HttpDelete]
         public IActionResult DeletePlanet(int id)
         {
-            _planetFacade.DeletePlanet(id);
-            return Ok();
+            var error = _planetFacade.DeletePlanet(id);
+
+            if (String.IsNullOrEmpty(error))
+            {
+                return Ok();
+            }
+            return BadRequest(error);
         }
     }
 }

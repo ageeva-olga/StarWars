@@ -8,6 +8,6 @@ namespace Logic.Interfaces
         Character GetByIdCharacter(int id);
         string AddCharacter(Character character);
         string UpdateCharacter(Character character);
-        void DeleteCharacter(int id);
+        string DeleteCharacter(int id);
     }
 }

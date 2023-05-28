@@ -30,7 +30,6 @@ namespace DAL.Repository
             film.Characters = null;
             _context.Films.Remove(film);
             _context.SaveChanges();
-
         }
 
         public List<Film> GetFilms()

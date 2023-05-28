@@ -53,8 +53,13 @@ namespace StarWars.Controllers
         [HttpDelete]
         public IActionResult DeleteCharacter(int id)
         {
-            _characterFacade.DeleteCharacter(id);
-            return Ok();
+            var error = _characterFacade.DeleteCharacter(id);
+
+            if(String.IsNullOrEmpty(error))
+            {
+                return Ok();
+            }
+            return BadRequest(error);
         }
     }
 }

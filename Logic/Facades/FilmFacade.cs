@@ -18,16 +18,17 @@ namespace Logic.Facades
             return _filmRepository.AddFilm(film);
         }
 
-        public void DeleteFilm(int id)
+        public string DeleteFilm(int id)
         {
             try
             {
                 _filmRepository.DeleteFilm(id);
+                return "";
             }
             catch (KeyNotFoundException ex)
             {
                 _logger.LogError(ex, ex.Message);
-                throw;
+                return ex.Message;
             }
         }
 

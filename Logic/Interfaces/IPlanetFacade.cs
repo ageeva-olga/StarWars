@@ -6,6 +6,6 @@ namespace Logic.Interfaces
     {
         List<Planet> GetPlanets();
         Planet AddPlanet(Planet character);
-        void DeletePlanet(int id);
+        string DeletePlanet(int id);
     }
 }
