@@ -13,14 +13,94 @@ namespace DAL.Repository
             _context = context;
         }
 
-        public List<Character> GetCharacters()
+        public List<Character> GetCharacters(int page, int number, FilterCharacter? filterCharacter)
         {
-            var characterList = _context.Characters
+            if(!String.IsNullOrEmpty(filterCharacter.PlanetName) &&
+                String.IsNullOrEmpty(filterCharacter.Name)&&
+                String.IsNullOrEmpty(filterCharacter.FilmName))
+            {
+                return _context.Characters
+                .Where(x => x.Planet.Name == filterCharacter.PlanetName)
                 .Include(character => character.Planet)
                 .Include(character => character.Films)
                 .ToList();
+            }
 
-            return characterList;
+            if (String.IsNullOrEmpty(filterCharacter.PlanetName) &&
+                !String.IsNullOrEmpty(filterCharacter.Name) &&
+                String.IsNullOrEmpty(filterCharacter.FilmName))
+            {
+                return _context.Characters
+                .Where(x => x.Name == filterCharacter.Name)
+                .Include(character => character.Planet)
+                .Include(character => character.Films)
+                .ToList();
+            }
+
+            if (String.IsNullOrEmpty(filterCharacter.PlanetName) &&
+                String.IsNullOrEmpty(filterCharacter.Name) &&
+                !String.IsNullOrEmpty(filterCharacter.FilmName))
+            {
+                return _context.Characters
+                .Where(x => x.Films.FirstOrDefault(film => film.Name == filterCharacter.FilmName).Name == filterCharacter.FilmName)
+                .Include(character => character.Planet)
+                .Include(character => character.Films)
+                .ToList();
+            }
+
+            if (!String.IsNullOrEmpty(filterCharacter.PlanetName) &&
+                !String.IsNullOrEmpty(filterCharacter.Name) &&
+                String.IsNullOrEmpty(filterCharacter.FilmName))
+            {
+                return _context.Characters
+                .Where(x => x.Planet.Name == filterCharacter.PlanetName && x.Name == filterCharacter.Name)
+                .Include(character => character.Planet)
+                .Include(character => character.Films)
+                .ToList();
+            }
+
+            if (!String.IsNullOrEmpty(filterCharacter.PlanetName) &&
+                !String.IsNullOrEmpty(filterCharacter.Name) &&
+                !String.IsNullOrEmpty(filterCharacter.FilmName))
+            {
+                return _context.Characters
+                .Where(x => x.Planet.Name == filterCharacter.PlanetName 
+                && x.Name == filterCharacter.Name
+                && x.Films.FirstOrDefault(film => film.Name == filterCharacter.FilmName).Name == filterCharacter.FilmName)
+                .Include(character => character.Planet)
+                .Include(character => character.Films)
+                .ToList();
+            }
+
+            if (!String.IsNullOrEmpty(filterCharacter.PlanetName) &&
+                String.IsNullOrEmpty(filterCharacter.Name) &&
+                !String.IsNullOrEmpty(filterCharacter.FilmName))
+            {
+                return _context.Characters
+                .Where(x => x.Planet.Name == filterCharacter.PlanetName
+                && x.Films.FirstOrDefault(film => film.Name == filterCharacter.FilmName).Name == filterCharacter.FilmName)
+                .Include(character => character.Planet)
+                .Include(character => character.Films)
+                .ToList();
+            }
+            if (String.IsNullOrEmpty(filterCharacter.PlanetName) &&
+                !String.IsNullOrEmpty(filterCharacter.Name) &&
+                !String.IsNullOrEmpty(filterCharacter.FilmName))
+            {
+                return _context.Characters
+                .Where(x => x.Name == filterCharacter.Name
+                && x.Films.FirstOrDefault(film => film.Name == filterCharacter.FilmName).Name == filterCharacter.FilmName)
+                .Include(character => character.Planet)
+                .Include(character => character.Films)
+                .ToList();
+            }
+
+
+            return _context.Characters
+                .Include(character => character.Planet)
+                .Include(character => character.Films)
+                .Skip(page).Take(number)
+                .ToList();
         }
         public Character GetByIdCharacter(int id)
         {
@@ -76,6 +156,17 @@ namespace DAL.Repository
             character.Films = null;
             _context.Characters.Remove(character);
             _context.SaveChanges();
+        }
+
+        public List<Character> GetCharactersByPlanet(int planetId)
+        {
+            var characterList = _context.Characters
+                .Where(x => x.PlanetId == planetId)
+                .Include(character => character.Planet)
+                .Include(character => character.Films)
+                .ToList();
+
+            return characterList;
         }
     }
 }

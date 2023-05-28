@@ -58,9 +58,9 @@ namespace Logic.Facades
             }
         }
 
-        public List<Character> GetCharacters()
+        public List<Character> GetCharacters(int page, int number, FilterCharacter? filterCharacter)
         {
-            return _characterRepo.GetCharacters();
+            return _characterRepo.GetCharacters(page, number, filterCharacter);
         }
         public string ValidateCharacter(Character character)
         {
@@ -103,6 +103,11 @@ namespace Logic.Facades
                 _logger.LogError(message);
                 return message;
             }
+        }
+
+        public List<Character> GetCharactersByPlanet(int planetId, int skip, int take)
+        {
+            return _characterRepo.GetCharactersByPlanet(planetId).Skip(skip).Take(take).ToList();
         }
     }
 }
