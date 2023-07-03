@@ -13,8 +13,8 @@ namespace StarWars.Controllers
         {
             _characterFacade = characterFacade;
         }
-        [HttpPut("getList")]
-        public List<Character> GetCharacters(int skip, int take, FilterCharacter? filterCharacter)
+        [HttpGet("getList")]
+        public List<Character> GetCharacters(int skip, int take, FilterCharacter filterCharacter)
         {
             var model = _characterFacade.GetCharacters(skip, take, filterCharacter);
             return model;

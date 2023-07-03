@@ -1,7 +1,7 @@
 ﻿using Logic.Interfaces;
 using Logic.Models;
 using Microsoft.EntityFrameworkCore;
-
+using System.Linq.Expressions;
 
 namespace DAL.Repository
 {
@@ -13,16 +13,46 @@ namespace DAL.Repository
             _context = context;
         }
 
-        public List<Character> GetCharacters(int page, int number, FilterCharacter? filterCharacter)
+        public List<Character> GetCharacters(int page, int number, FilterCharacter filterCharacter)
         {
-            if(!String.IsNullOrEmpty(filterCharacter.PlanetName) &&
+            Expression<Func<Character, bool>> expression = x => true;
+            if(!String.IsNullOrEmpty(filterCharacter.Name))
+            {
+                var parameterExpression = Expression.Parameter(Type.GetType("Logic.Models.Character"));
+                var constant = Expression.Constant(filterCharacter.Name);
+                var property = Expression.Property(parameterExpression, "Name");
+                var expressionName = Expression.Equal(property, constant);
+                var expressionAnd = Expression.And(expression, expressionName);
+                expression = Expression.Lambda<Func<Character, bool>>(expressionAnd);
+            }
+
+            if (!String.IsNullOrEmpty(filterCharacter.PlanetName))
+            {
+                var parameterExpression = Expression.Parameter(Type.GetType("Logic.Models.Character"));
+                var constant = Expression.Constant(filterCharacter.PlanetName);
+                var property = Expression.Property(parameterExpression, "Planet.Name");
+                var expressionName = Expression.Equal(property, constant);
+                var expressionAnd = Expression.And(expression, expressionName);
+                expression = Expression.Lambda<Func<Character, bool>>(expressionAnd);
+            }
+
+
+            var filter = Expression.Lambda<Func<Character, bool>>(expression);
+
+            return _context.Characters
+                .Include(character => character.Planet)
+                .Include(character => character.Films)
+                .Where(filter.Compile())//(x => x.Planet.Name == filterCharacter.PlanetName)
+                .ToList();
+
+            if (!String.IsNullOrEmpty(filterCharacter.PlanetName) &&
                 String.IsNullOrEmpty(filterCharacter.Name)&&
                 String.IsNullOrEmpty(filterCharacter.FilmName))
             {
                 return _context.Characters
-                .Where(x => x.Planet.Name == filterCharacter.PlanetName)
                 .Include(character => character.Planet)
                 .Include(character => character.Films)
+                .Where(filter.Compile())//(x => x.Planet.Name == filterCharacter.PlanetName)
                 .ToList();
             }
 
@@ -66,7 +96,7 @@ namespace DAL.Repository
                 return _context.Characters
                 .Where(x => x.Planet.Name == filterCharacter.PlanetName 
                 && x.Name == filterCharacter.Name
-                && x.Films.FirstOrDefault(film => film.Name == filterCharacter.FilmName).Name == filterCharacter.FilmName)
+                && x.Films.Any(film => film.Name == filterCharacter.FilmName))
                 .Include(character => character.Planet)
                 .Include(character => character.Films)
                 .ToList();
